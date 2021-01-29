@@ -185,3 +185,38 @@ func Test_todoHandler_deleteTodo(t *testing.T) {
 		})
 	}
 }
+
+func Test_todoHandler_getToken(t *testing.T) {
+	dbc, err := db.NewDBConnection()
+	fmt.Println(dbc, err)
+
+	req, err := http.NewRequest("DELETE", "http://localhost:8080/login", bytes.NewBuffer([]byte(`{"username":"sruthi","passwordhash":"sruthis"}`)))
+	fmt.Println(req, err)
+
+	rw := httptest.NewRecorder()
+	type args struct {
+		w http.ResponseWriter
+		r *http.Request
+	}
+	tests := []struct {
+		name    string
+		handler *todoHandler
+		args    args
+	}{
+		{
+			name: "test",
+			handler: &todoHandler{
+				postgres: dbc,
+			},
+			args: args{
+				w: rw,
+				r: req,
+			},
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			tt.handler.getToken(tt.args.w, tt.args.r)
+		})
+	}
+}

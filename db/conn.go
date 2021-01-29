@@ -35,7 +35,7 @@ func NewDBConnection() (conn *DBConnection, err error) {
 	conn = new(DBConnection)
 	conn.dbType = "postgres"
 
-	conn.DB, err = sql.Open("postgres", "postgres://postgres:postgres@postgres:5432/postgres?sslmode=disable")
+	conn.DB, err = sql.Open("postgres", "postgres://postgres:postgres@localhost:5432/postgres?sslmode=disable")
 	if err != nil {
 		return
 	}
@@ -280,7 +280,7 @@ func (conn *DBConnection) Login(name, password string) (res map[string]interface
 		expiresAt := time.Now().Add(time.Minute * 100000).Unix()
 
 		err = bcrypt.CompareHashAndPassword([]byte(passwordhash), []byte(password))
-		if err != nil && err == bcrypt.ErrMismatchedHashAndPassword {
+		if err != nil {
 			res = map[string]interface{}{"status": false, "message": "Invalid login credentials. Please try again"}
 			return
 		}
