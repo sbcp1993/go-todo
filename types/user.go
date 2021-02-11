@@ -6,7 +6,7 @@ import (
 
 type User struct {
 	Name         string `json:"username"`
-	PasswordHash string `json:"passwordhash"`
+	PasswordHash string `json:"password"`
 }
 
 type Token struct {

@@ -93,7 +93,7 @@ func register() {
 
 	user := struct {
 		Name         string `json:"username"`
-		PasswordHash string `json:"passwordhash"`
+		PasswordHash string `json:"password"`
 	}{
 		name, passwd,
 	}
@@ -127,7 +127,7 @@ func login() {
 
 	user := struct {
 		Name         string `json:"username"`
-		PasswordHash string `json:"passwordhash"`
+		PasswordHash string `json:"password"`
 	}{
 		name, passwd,
 	}
