@@ -2,7 +2,6 @@ package db
 
 import (
 	"database/sql"
-	"encoding/base64"
 	"errors"
 	"go-todo/types"
 	"os"
@@ -184,20 +183,20 @@ func (conn *DBConnection) GetTodoByPriority(priority string) (titles []string, e
 	return titles, nil
 }
 
-func buildPasswordHash(pwd string) (hashB64 string, err error) {
+func buildPasswordHash(pwd string) (hash []byte, err error) {
 	var bytePWD []byte
-	var hash []byte
+	// var hash []byte
 
 	if "" == pwd {
 		err = errors.New("password empty")
 		return
 	}
-
-	if hash, err = bcrypt.GenerateFromPassword(bytePWD, int(14)); err != nil {
+	bytePWD = []byte(pwd)
+	if hash, err = bcrypt.GenerateFromPassword(bytePWD, bcrypt.DefaultCost); err != nil {
 		return
 	}
 
-	hashB64 = base64.StdEncoding.EncodeToString(hash)
+	// hashB64 = base64.StdEncoding.EncodeToString(hash)
 	return
 }
 
@@ -226,7 +225,7 @@ func (conn *DBConnection) userExists(name string) (exists bool, err error) {
 }
 
 func (conn *DBConnection) AddUser(usr *types.User) error {
-	var hash string
+	var hash []byte
 	var err error
 	var exist bool
 
@@ -238,7 +237,7 @@ func (conn *DBConnection) AddUser(usr *types.User) error {
 			return err
 		}
 		ib := conn.Builder.NewInsertBuilder()
-		ib.InsertInto(dbuserTable).Cols("username", "password_hash").Values(usr.Name, hash)
+		ib.InsertInto(dbuserTable).Cols("username", "password_hash").Values(usr.Name, string(hash))
 
 		sqlString, args := ib.Build()
 
@@ -292,7 +291,7 @@ func (conn *DBConnection) Login(name, password string) (res map[string]interface
 			},
 		}
 
-		os.Setenv("ACCESS_SECRET", "secret")
+		os.Setenv("ACCESS_SECRET", "jdnfksdmfksd")
 
 		token := jwt.NewWithClaims(jwt.GetSigningMethod("HS256"), tk)
 

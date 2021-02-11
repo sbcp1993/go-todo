@@ -245,7 +245,7 @@ func getbystatus(s bool) {
 
 func add() {
 	if len(os.Args) < 7 {
-		fmt.Println("cmd syntax: add \"title\" \"description\" \"priority\" \"date (mm/dd/yy)\" \"token\"")
+		fmt.Println("cmd syntax: add \"title\" \"description\" \"priority(high/low/medium)\" \"date (mm/dd/yy)\" \"token\"")
 		return
 	}
 	var title string

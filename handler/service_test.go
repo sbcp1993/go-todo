@@ -190,7 +190,7 @@ func Test_todoHandler_getToken(t *testing.T) {
 	dbc, err := db.NewDBConnection()
 	fmt.Println(dbc, err)
 
-	req, err := http.NewRequest("DELETE", "http://localhost:8080/login", bytes.NewBuffer([]byte(`{"username":"sruthi","passwordhash":"sruthis"}`)))
+	req, err := http.NewRequest("POST", "http://localhost:8080/register", bytes.NewBuffer([]byte(`{"username":"sruthi","passwordhash":"sruthis"}`)))
 	fmt.Println(req, err)
 
 	rw := httptest.NewRecorder()
